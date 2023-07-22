@@ -5,6 +5,7 @@ function Header() {
 
     const [getData, setgetData] = useState()
     const [Loading, setLoading] = useState(true)
+    const [Error, setError] = useState(false)
 
     useEffect(() => {
         fetch('https://64b8278821b9aa6eb0799f1f.mockapi.io/movie/films')
@@ -13,10 +14,17 @@ function Header() {
             .finally(() => {
                 setLoading(false)
             })
+            .catch(() => {
+                setError(true)
+            })
     }, [])
 
     if (Loading) {
         return <h1>Loading...</h1>
+    }
+
+    if (Error) {
+        return <h2>ERROR !</h2>
     }
 
 
@@ -25,11 +33,11 @@ function Header() {
         <>
             <div className="section">
                 <div className="container">
+                    <div className="cards">
+                        {
+                            getData?.map((item, index) => {
+                                return (
 
-                    {
-                        getData?.map((item, index) => {
-                            return (
-                                <div className="cards">
                                     <div className="card">
                                         <div className="card-top">
                                             <div className="card-avatar">
@@ -38,7 +46,7 @@ function Header() {
                                         </div>
                                         <div className="card-middle">
                                             <div className="card-middle-desc">
-                                                <h4 className='card-middle-movie-name-h4'>Movie Name: <span>{item?.name}</span></h4>
+                                                <h4 className='card-middle-movie-name-h4'>{item?.name}</h4>
                                             </div>
                                         </div>
                                         <div className="card-bottom">
@@ -50,10 +58,10 @@ function Header() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })
-                    }
+                                )
+                            })
+                        }
+                    </div>
                 </div>
             </div>
         </>
